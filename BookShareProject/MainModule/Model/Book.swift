@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Books: Decodable {
-    var id: Int
-    var isbn, title, author: String
+struct Books: Codable {
+    var id: Int?
+    var isbn, title, author: String?
     var image: String?
 //    let publishDate: String
 //    let genreID: Int?

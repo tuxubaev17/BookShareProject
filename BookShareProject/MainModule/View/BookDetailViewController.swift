@@ -8,8 +8,9 @@
 import UIKit
 
 class BookDetailViewController: UIViewController {
-
     
+    let bookViewModel = BookViewModel()
+
     lazy var titleName: UILabel = {
         let title = UILabel()
         title.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
@@ -64,6 +65,7 @@ class BookDetailViewController: UIViewController {
             self.view.backgroundColor = .white
             setupViews()
             
+            
         }
         
         private func setupViews(){
@@ -93,9 +95,19 @@ class BookDetailViewController: UIViewController {
             reservButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
             reservButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
             reservButton.topAnchor.constraint(equalTo: authorName.bottomAnchor, constant: 20).isActive = true
-
-            
+    
         }
-
+    
+    public func setBookImage(imagePath: String){
+        bookViewModel.getImage(path: imagePath) { [weak self] (imageData) in
+            guard let self = self else { return }
+            if let image = UIImage(data: imageData){
+                self.bookImage.image = image
+            } else {
+                self.bookImage.image = UIImage(named: "No image")
+            }
+        }
+    }
+    
 
 }

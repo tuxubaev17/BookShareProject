@@ -14,6 +14,7 @@ import Griffon_ios_spm
 class MainViewController: UIViewController {
 
     var books = [Books]()
+    let bookViewModel = BookViewModel()
     let bookProvider = MoyaProvider<BookService>()
     let griffon = GriffonConfigurations()
     let vc = SignInViewController()
@@ -30,8 +31,8 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.title = "Books"
-        vc.delegate = self
-        self.present(vc, animated: true)
+//        vc.delegate = self
+//        self.present(vc, animated: true)
         setupViews()
         getAllBooks()
 }
@@ -53,7 +54,6 @@ class MainViewController: UIViewController {
             switch result {
             case .success(let response):
                 let loadBooks = try! JSONDecoder().decode([Books].self, from: response.data)
-                print(loadBooks)
                 self.books = loadBooks
                 self.booksTableView.reloadData()
             case .failure(let error):
@@ -88,7 +88,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
          let bookDetailVC = BookDetailViewController()
          bookDetailVC.titleName.text = books[indexPath.row].title
          bookDetailVC.authorName.text = books[indexPath.row].author
-         bookDetailVC.bookImage.image = UIImage(named: books[indexPath.row].image ?? " ")
+         bookDetailVC.setBookImage(imagePath: books[indexPath.row].image ?? "nil")
          self.navigationController?.pushViewController(bookDetailVC, animated: true)
      }
     
@@ -110,7 +110,3 @@ extension MainViewController:  SignInViewControllerDelegate {
     
     
 }
-
-
-
-

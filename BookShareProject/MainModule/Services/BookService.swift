@@ -11,7 +11,6 @@ import Moya
 
 enum BookService {
     case getAllBooks
-    case deleteBook(id: Int)
 }
 
 extension BookService: TargetType {
@@ -23,8 +22,6 @@ extension BookService: TargetType {
         switch self {
         case .getAllBooks:
             return "/books"
-        case .deleteBook(let id):
-            return "/books/\(id)"
         }
     }
     
@@ -32,8 +29,6 @@ extension BookService: TargetType {
         switch self {
         case .getAllBooks:
             return .get
-        case .deleteBook(_ ):
-            return .delete
         }
     }
     
@@ -41,14 +36,12 @@ extension BookService: TargetType {
         switch self {
         case .getAllBooks:
             return Data()
-        case .deleteBook(let id):
-            return "{'id':'\(id)'}".data(using: .utf8)!
         }
     }
     
     var task: Task {
         switch self {
-        case .getAllBooks, .deleteBook(_):
+        case .getAllBooks:
                 return .requestPlain
         }
     }
