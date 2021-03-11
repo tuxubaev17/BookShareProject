@@ -9,13 +9,23 @@ import UIKit
 
 class BookTableViewCell: UITableViewCell {
 
+    lazy var iconImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.layer.cornerRadius = 4
+        image.layer.masksToBounds = true
+        return image
+    }()
+    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .systemPink
         return label
     }()
     
     lazy var authorLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .systemPink
         return label
     }()
     
@@ -36,22 +46,26 @@ class BookTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
     
     private func setupViews(){
-        [titleLabel, authorLabel].forEach{
+        [titleLabel, authorLabel, iconImageView].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        iconImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        iconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 25).isActive = true
+        iconImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        iconImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 30).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         authorLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
-        authorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        authorLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        authorLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 30).isActive = true
+        authorLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 
     }
 

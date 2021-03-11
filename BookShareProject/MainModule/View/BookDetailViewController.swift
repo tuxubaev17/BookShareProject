@@ -98,16 +98,4 @@ class BookDetailViewController: UIViewController {
     
         }
     
-    public func setBookImage(imagePath: String){
-        bookViewModel.getImage(path: imagePath) { [weak self] (imageData) in
-            guard let self = self else { return }
-            if let image = UIImage(data: imageData){
-                self.bookImage.image = image
-            } else {
-                self.bookImage.image = UIImage(named: "No image")
-            }
-        }
-    }
-    
-
 }
