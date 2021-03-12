@@ -11,10 +11,12 @@ import UIKit
 
 class BookViewModel {
     
+    
+    
     let bookImageProvider = MoyaProvider<BooksImageService>()
     let bookProvider = MoyaProvider<BookService>()
     
-    public func getAllBooks(comp: @escaping ([Books])->()){
+    func getAllBooks(comp: @escaping ([Books])->()){
         bookProvider.request(.getAllBooks) { (result) in
             switch result {
             case .success(let response):
@@ -30,7 +32,7 @@ class BookViewModel {
         }
     }
     
-    public func getImage(path: String, completion: @escaping (Data) -> ()){
+    func getImage(path: String, completion: @escaping (Data) -> ()){
         bookImageProvider.request(.getBookImage(path: (path))) { (result) in
             switch result{
             case .success(let response):
@@ -41,7 +43,7 @@ class BookViewModel {
         }
     }
     
-    public func setBookImage(imagePath: String, bookIV: UIImageView){
+    func setBookImage(imagePath: String, bookIV: UIImageView){
         getImage(path: imagePath) { [weak self] (imageData) in
             guard self != nil else { return }
             if let image = UIImage(data: imageData){

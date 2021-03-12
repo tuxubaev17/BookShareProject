@@ -7,9 +7,6 @@
 
 import Foundation
 
-struct Root: Codable {
-    let books : [Books]
-}
 
 struct Books: Codable {
     var id: Int?

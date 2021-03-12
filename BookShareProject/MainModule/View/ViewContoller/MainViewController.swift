@@ -147,12 +147,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        bookDetailVC.reservButton = { [weak self] in
-//            guar let self = self else { return }
-//            self?.books[indexPath.row].enabled = true
-//
-//        }
-
         bookDetailVC.titleName.text = books[indexPath.row].title
         bookDetailVC.authorName.text = books[indexPath.row].author
         bookViewModel.setBookImage(imagePath: books[indexPath.row].image ?? "null", bookIV: bookDetailVC.bookImage)
