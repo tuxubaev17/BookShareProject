@@ -14,5 +14,5 @@ struct Books: Codable {
     var image: String?
 //    let publishDate: String
 //    let genreID: Int?
-//    let createdAt, updatedAt: String`
+//    let createdAt, updatedAt: String
 }

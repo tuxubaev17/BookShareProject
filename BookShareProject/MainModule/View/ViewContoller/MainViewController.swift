@@ -55,6 +55,7 @@ class MainViewController: UIViewController {
         myCollectionView.dataSource = self
         myCollectionView.delegate = self
         myCollectionView.backgroundColor = .white
+        myCollectionView.isScrollEnabled = false
         return myCollectionView
     }()
            
@@ -105,7 +106,7 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return books.count / 3
+        return books.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -147,6 +148,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        bookDetailVC.favBook = books[indexPath.row]
+        
         bookDetailVC.titleName.text = books[indexPath.row].title
         bookDetailVC.authorName.text = books[indexPath.row].author
         bookViewModel.setBookImage(imagePath: books[indexPath.row].image ?? "null", bookIV: bookDetailVC.bookImage)

@@ -11,6 +11,7 @@ import Moya
 
 enum BookService {
     case getAllBooks
+    case getRentId(rentId: Int)
 }
 
 extension BookService: TargetType {
@@ -22,28 +23,27 @@ extension BookService: TargetType {
         switch self {
         case .getAllBooks:
             return "/books"
+        case .getRentId(let rentId):
+            return "/rent/\(rentId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getAllBooks:
+        case .getAllBooks, .getRentId:
             return .get
         }
     }
     
     var sampleData: Data {
         switch self {
-        case .getAllBooks:
+        case .getAllBooks, .getRentId:
             return Data()
         }
     }
     
     var task: Task {
-        switch self {
-        case .getAllBooks:
-                return .requestPlain
-        }
+        return .requestParameters(parameters: [:], encoding: URLEncoding.default)
     }
     
     var headers: [String : String]? {

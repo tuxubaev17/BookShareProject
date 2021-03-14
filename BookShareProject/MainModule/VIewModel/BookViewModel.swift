@@ -11,11 +11,20 @@ import UIKit
 
 class BookViewModel {
     
-    
-    
     let bookImageProvider = MoyaProvider<BooksImageService>()
     let bookProvider = MoyaProvider<BookService>()
     
+    func getRentId(rentID: Int, completion: @escaping (Data) -> ()){
+        bookProvider.request(.getRentId(rentId: rentID)) { (result) in
+            switch result{
+            case .success(let response):
+                print("All IMAGE, \(response.data)")
+                completion(response.data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     func getAllBooks(comp: @escaping ([Books])->()){
         bookProvider.request(.getAllBooks) { (result) in
             switch result {

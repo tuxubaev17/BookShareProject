@@ -10,6 +10,8 @@ import UIKit
 class BookDetailViewController: UIViewController {
     
     let bookViewModel = BookViewModel()
+    var favBook: Books?
+    
 
     lazy var titleName: UILabel = {
         let title = UILabel()
@@ -59,17 +61,23 @@ class BookDetailViewController: UIViewController {
             button.layer.cornerRadius = 3
             return button
         }()
+    
+    lazy var addToFavorite: UIButton = {
+       let button = UIButton()
+       button.setBackgroundImage(UIImage(named: "heart"), for: .normal)
+       button.setTitleColor(.white, for: .normal)
+       button.addTarget(self, action: #selector(addToFavorites), for: .touchUpInside)
+       return button
+       }()
         
         override func viewDidLoad() {
             super.viewDidLoad()
             self.view.backgroundColor = .white
             setupViews()
-            
-            
         }
         
         private func setupViews(){
-            [titleName, authorName,bookImage, reservButton].forEach{
+            [titleName, authorName,bookImage, reservButton, addToFavorite].forEach{
                 self.view.addSubview($0)
                 $0.translatesAutoresizingMaskIntoConstraints = false
             }
@@ -95,7 +103,31 @@ class BookDetailViewController: UIViewController {
             reservButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
             reservButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
             reservButton.topAnchor.constraint(equalTo: authorName.bottomAnchor, constant: 20).isActive = true
+            
+            addToFavorite.topAnchor.constraint(equalTo: reservButton.bottomAnchor, constant: 20).isActive = true
+            addToFavorite.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            addToFavorite.widthAnchor.constraint(equalToConstant: 50).isActive = true
+            addToFavorite.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
         }
+    
+    @objc func addToFavorites() {
+       print("Tapped")
+       addToFavorite.setBackgroundImage(UIImage(named: "heart.filled"), for: .normal)
+       if let favoriteBooks = favBook {
+        if !Favorites.roots.favBooks.contains(where: { (books) -> Bool in
+               return books.title == favoriteBooks.title
+           }) {
+                Favorites.roots.favBooks.append(favoriteBooks)
+           } else {
+            for i in 0..<Favorites.roots.favBooks.count{
+                   if Favorites.roots.favBooks[i].title == favoriteBooks.title {
+                    Favorites.roots.favBooks.remove(at: i)
+                   }
+               }
+               addToFavorite.setBackgroundImage(UIImage(named: "heart"), for: .normal)
+           }
+       }
+   }
     
 }

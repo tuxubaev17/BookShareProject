@@ -13,7 +13,7 @@ class SearchViewController: UIViewController {
     var books = [Books]()
     
     let bookViewModel = BookViewModel()
-    let bookDetailVC = BookDetailViewController()
+    let detailVC = BookDetailViewController()
     let bookProvider = MoyaProvider<BookService>()
     
     lazy var searchBar: UISearchBar = {
@@ -23,13 +23,13 @@ class SearchViewController: UIViewController {
       return search
       }()
       
-      lazy var tableView: UITableView = {
-          let tableView = UITableView()
-          tableView.dataSource = self
-          tableView.delegate = self
-          tableView.backgroundColor = .gray
-          tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookVC")
-          return tableView
+    lazy var searchTableView: UITableView = {
+      let tableView = UITableView()
+      tableView.dataSource = self
+      tableView.delegate = self
+      tableView.backgroundColor = .gray
+      tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookVC")
+      return tableView
       }()
 
     override func viewDidLoad() {
@@ -38,10 +38,11 @@ class SearchViewController: UIViewController {
         self.view.backgroundColor = .white
         setUpViews()
         searchBar.delegate = self
+        
         bookViewModel.getAllBooks { data in
            self.books = data
            DispatchQueue.main.async {
-               self.tableView.reloadData()
+               self.searchTableView.reloadData()
            }
     }
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -54,7 +55,7 @@ class SearchViewController: UIViewController {
         }
     
     private func setUpViews() {
-         [searchBar, tableView].forEach {
+         [searchBar, searchTableView].forEach {
              self.view.addSubview($0)
              $0.translatesAutoresizingMaskIntoConstraints = false
          }
@@ -64,10 +65,10 @@ class SearchViewController: UIViewController {
          searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
          searchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
          
-         tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
-         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+         searchTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+         searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+         searchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+         searchTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
      }
 }
 
@@ -86,25 +87,25 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 175
+        return 170
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        bookDetailVC.titleName.text = books[indexPath.row].title
-        bookDetailVC.authorName.text = books[indexPath.row].author
-        bookViewModel.setBookImage(imagePath: books[indexPath.row].image ?? "null", bookIV: bookDetailVC.bookImage)
-        self.navigationController?.pushViewController(bookDetailVC, animated: true)
+        detailVC.titleName.text = books[indexPath.row].title
+        detailVC.authorName.text = books[indexPath.row].author
+        bookViewModel.setBookImage(imagePath: books[indexPath.row].image ?? "null", bookIV: detailVC.bookImage)
+        self.navigationController?.pushViewController(detailVC, animated: true)
      }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText == ""{
+        if searchText == "" {
             bookViewModel.getAllBooks { data in
                self.books = data
                
                DispatchQueue.main.async {
-                   self.tableView.reloadData()
+                   self.searchTableView.reloadData()
                }
         }
         } else {
@@ -118,7 +119,7 @@ extension SearchViewController: UISearchBarDelegate {
                 })
             }
         }
-        self.tableView.reloadData()
- }
+        self.searchTableView.reloadData()
+  }
     
 }
